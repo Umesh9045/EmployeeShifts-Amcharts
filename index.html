@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/core.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/charts.js"></script>
+    <script src="https://cdn.amcharts.com/lib/4/themes/animated.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="main">
+        <div class="container">
+            <h1>Employee Shift Time Calculator</h1>
+            <label for="inTime">In Time:</label>
+            <input type="time" id="inTime"  value="09:30" required>
+            <label for="outTime">Out Time:</label>
+            <input type="time" id="outTime"  value="06:30" required>
+            <button onclick=" calculateTime()">Submit</button>
+
+            <div id="shift_details">
+                <hr>
+                <p>Total Work Time = <span id="span_totalWorkTime"></span> Hrs</p>
+                <p>Total Overtime = <span id="span_totalOverTime"></span> Hrs</p>
+                <p>Before Shift Time = <span id="span_beforeShiftTime"></span> Hrs</p>
+                <p>Normal Shift Time = <span id="span_normalShiftTime"></span> Hrs</p>
+                <p>After Shift Time = <span id="span_afterShiftTime"></span> Hrs</p>
+            </div>
+        </div>
+        <div id="myChart"></div>
+    </div>
+    <script src="index3.js"></script>   
+
+</body>
+
+</html>
+<!-- 
+
+<div class="chart-container">
+    <table>
+        <tr>
+            <th>Entry Time</th>
+            <th>Exit Time</th>
+            <th>Action</th>
+        </tr>
+        <tr>
+            <td><input type="time" id="entry-time" value="09:30"></td>
+            <td><input type="time" id="exit-time" value="06:30"></td>
+            <td><button onclick="highlightSlice()">Highlight</button></td>
+        </tr>
+       
+    </table>
+    <div id="myChart"></div>
+</div> -->
