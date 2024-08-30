@@ -13,7 +13,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         chart = am4core.create("myChart", am4charts.PieChart);
         chart.data = generateData();
-        console.log("Initial Chart Data:", chart.data); // Log initial data
 
         var pieSeries = chart.series.push(new am4charts.PieSeries());
         pieSeries.dataFields.value = "value";
@@ -23,14 +22,15 @@ document.addEventListener("DOMContentLoaded", function () {
         pieSeries.slices.template.propertyFields.stroke = "stroke";
         pieSeries.slices.template.propertyFields.fill = "color";
         pieSeries.slices.template.propertyFields.hidden = "hidden";
-        pieSeries.labels.template.text = "{lable}{additionalLabel}"; // Display hour labels and additional labels
+        pieSeries.labels.template.text = "{additionalLabel}{lable}";
         pieSeries.labels.template.fontSize = 10;
         pieSeries.labels.template.wrap = true;
-        pieSeries.labels.template.maxWidth = 100; // Max width of labels (shift-description)
+        pieSeries.labels.template.maxWidth = 100; //maxwidth of labels (shift-description)
         pieSeries.alignLabels = false;
         pieSeries.labels.template.radius = 0.7;
         pieSeries.labels.template.disabled = false;
-
+        pieSeries.slices.template.tooltipText = ""; //shift-slice hover text
+        
         pieSeries.labels.template.adapter.add("radius", function (radius, target) {
             if (target.dataItem && target.dataItem.dataContext.additionalLabel) {
                 // pieSeries.slices.template.tooltipText = target.dataItem.dataContext.additionalLabel;
@@ -39,22 +39,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return radius;
         });
 
-        // Tooltip setup
-        pieSeries.tooltip.getFillFromObject = false; // Ensures the tooltip uses the specified color
-        pieSeries.tooltip.background.fill = am4core.color("#ffffff"); // Tooltip background color
-        pieSeries.tooltip.background.stroke = am4core.color("#000000"); // Tooltip border color
-        pieSeries.tooltip.label.fill = am4core.color("#000000"); // Tooltip text color
-        pieSeries.tooltip.label.fontSize = 12; // Tooltip text size
-
-        // Ensure that the tooltip shows additionalLabel
-        pieSeries.slices.template.adapter.add("tooltipText", function (tooltipText, slice) {
-            return slice.dataItem ? slice.dataItem.dataContext.tooltipText : "";
-        });
-
         chart.legend = new am4charts.Legend();
         chart.legend.disabled = true;
-
-        console.log("Chart Initialized");
     });
 
 });
@@ -111,6 +97,7 @@ function loadChartData(day) {
             hideLoadingSpinner();
         });
 }
+
 function updateChart(shifts, day) {
     var totalMinutes = 1440; // Total minutes in a day
     var updatedData = generateData();
@@ -121,7 +108,6 @@ function updateChart(shifts, day) {
         dataItem.color = remainingColor;
         dataItem.stroke = remainingColor;
         dataItem.hidden = false;
-        dataItem.tooltipText = ""; // Clear existing tooltip text
     });
 
     document.getElementById("displayDay").innerText = day;
@@ -133,25 +119,23 @@ function updateChart(shifts, day) {
             var endIndex = slot.exitTotalMinutes;
             endIndex = Math.min(endIndex, totalMinutes);
             var labelAssigned = false;
-            if (startIndex < endIndex) {
+            if(startIndex < endIndex){
                 var middleIndex = Math.floor((startIndex + endIndex) / 2); // Calculate the middle index
             }
-            else if (startIndex > endIndex) {
-                var middleIndex = Math.floor((startIndex + 1440) / 2);
+            else if(startIndex > endIndex) {
+                var middleIndex = Math.floor((startIndex  + 1440) / 2);
             }
-
+            
             updatedData.forEach((dataItem, index) => {
                 if (startIndex < endIndex) {
                     if (index >= startIndex && index < endIndex) {
                         dataItem.color = slot.color;
                         dataItem.stroke = slot.color;
                         dataItem.index = slot.index; // Store the index
-                        // if (!labelAssigned && index === middleIndex) {
-                        //     dataItem.additionalLabel = slot.description;
-                        //     labelAssigned = true;
-                        // }
-
-                        dataItem.tooltipText = slot.description; // Tooltip for each index
+                        if (!labelAssigned && index === middleIndex) {
+                            dataItem.additionalLabel = slot.description;
+                            labelAssigned = true;
+                        }
                     }
                 }
                 else if (startIndex > endIndex) {
@@ -159,18 +143,11 @@ function updateChart(shifts, day) {
                         dataItem.color = slot.color;
                         dataItem.stroke = slot.color;
                         dataItem.index = slot.index; // Store the index
-                        // if (!labelAssigned && index === middleIndex) {
-                        //     dataItem.additionalLabel = slot.description;
-                        //     labelAssigned = true;
-                        // }
-                        dataItem.tooltipText = slot.description; // Tooltip for each index
+                        if (!labelAssigned && index === middleIndex) {
+                            dataItem.additionalLabel = slot.description;
+                            labelAssigned = true;
+                        }
                     }
-                }
-            });
-            // Set additional label only for the central index
-            updatedData.forEach((dataItem, index) => {
-                if (index === middleIndex) {
-                    dataItem.additionalLabel = slot.description; // Label at central index
                 }
             });
         });
@@ -190,20 +167,19 @@ function parseTimeToMinutes(time) {
     return hour * 60 + minute;
 }
 
-
 function generateData() {
     var data = [];
     for (var i = 0; i < 1440; i++) {
         var hour = Math.floor(i / 60);
-        var label = (i % 60 === 0 && hour >= 0 && hour <= 23) ? (hour === 0 ? 24 : hour) : ''; // Display 1 to 24
+        var label = (i % 60 === 0 && hour >= 0 && hour <= 23) ? hour.toString() : '';
+
         data.push({
             category: i,
             value: 1,
             lable: label,
             color: remainingColor,
-            additionalLabel: "", // Initial additional label
-            tooltipText: "", // Initial tooltip text
-            index: null // Make sure each data item has an index
+            additionalLabel: "",
+            index: null
         });
     }
     return data;
