@@ -1,0 +1,153 @@
+[
+    {
+        "shiftId": 1052,
+        "periodId": 10732,
+        "name": "Sunday",
+        "scl": null,
+        "description": "Entry(02:00-10:00). Exit11:59-22:00",
+        "typeOfDay": 1,
+        "shiftDaysResponse": [
+            {
+                "periodId": 10732,
+                "timeSliceId": 100595,
+                "name": "07:00 to 10:00",
+                "description": "(s)HRS - Unpaid Leave"
+            },
+            {
+                "periodId": 10732,
+                "timeSliceId": 100633,
+                "name": "12:00 to 17:30",
+                "description": "(n)Days - Unpaid Leave"
+            },
+            {
+                "periodId": 10732,
+                "timeSliceId": 100634,
+                "name": "17:30 to 2:30",
+                "description": "(r)Hrs - Overtime 2.0"
+            }
+        ]
+    },
+    {
+        "shiftId": 1053,
+        "periodId": 10733,
+        "name": "Monday",
+        "scl": null,
+        "description": "Entry(03:00-11:00). Exit12:00-23:00",
+        "typeOfDay": 2,
+        "shiftDaysResponse": [
+            {
+                "periodId": 10733,
+                "timeSliceId": 100636,
+                "name": "08:00 to 11:00",
+                "description": "(s)HRS - Paid Leave"
+            },
+            {
+                "periodId": 10733,
+                "timeSliceId": 100637,
+                "name": "12:00 to 16:00",
+                "description": "(n)Days - Paid Leave"
+            },
+            {
+                "periodId": 10733,
+                "timeSliceId": 100638,
+                "name": "16:00 to 19:00",
+                "description": "(r)Hrs - Overtime 1.5"
+            }
+        ]
+    },
+    {
+        "shiftId": 1054,
+        "periodId": 10734,
+        "name": "Tuesday",
+        "scl": null,
+        "description": "Entry(04:00-12:00). Exit13:00-00:00",
+        "typeOfDay": 3,
+        "shiftDaysResponse": [
+            {
+                "periodId": 10734,
+                "timeSliceId": 100639,
+                "name": "09:00 to 12:00",
+                "description": "(s)HRS - Regular"
+            },
+            {
+                "periodId": 10734,
+                "timeSliceId": 100640,
+                "name": "13:00 to 17:00",
+                "description": "(n)Days - Regular"
+            },
+            {
+                "periodId": 10734,
+                "timeSliceId": 100641,
+                "name": "19:00 to 20:00",
+                "description": "(r)Hrs - Overtime 2.0"
+            }
+        ]
+    },
+    {
+        "shiftId": 1012,
+        "periodId": 10162,
+        "name": "Wednesday",
+        "scl": "Admin Daily11111",
+        "description": "Entry(05:30-16:29). Exit08:01-02:00",
+        "typeOfDay": 1,
+        "shiftDaysResponse": [
+            {
+                "periodId": 10162,
+                "timeSliceId": 100295,
+                "name": "05:30 to 07:00",
+                "description": "(TA)Before Shift O/T"
+            },
+            {
+                "periodId": 10162,
+                "timeSliceId": 100296,
+                "name": "08:00 to 14:30",
+                "description": "(TA)Hrs Normal"
+            },
+            {
+                "periodId": 10162,
+                "timeSliceId": 100297,
+                "name": "16:30 to 23:00",
+                "description": "(TA)After Shift O/T"
+            }
+        ]
+    },
+    {
+        "shiftId": 1013,
+        "periodId": 10163,
+        "name": "Thursday",
+        "scl": "Admin Daily11111",
+        "description": "Entry(05:30-16:29). Exit08:01-02:00",
+        "typeOfDay": 1,
+        "shiftDaysResponse": [
+            {
+                "periodId": 10162,
+                "timeSliceId": 100295,
+                "name": "08:30 to 09:00",
+                "description": "(TA)Before Shift O/T"
+            },
+            {
+                "periodId": 10162,
+                "timeSliceId": 100296,
+                "name": "10:00 to 13:30",
+                "description": "(TA)Hrs Normal"
+            },
+            {
+                "periodId": 10162,
+                "timeSliceId": 100297,
+                "name": "17:30 to 20:00",
+                "description": "(TA)After Shift O/T"
+            }
+        ]
+    },
+    {
+        "shiftId": 1012,
+        "periodId": 10162,
+        "name": "Friday",
+        "scl": "Admin Daily11111",
+        "description": "Entry(05:30-16:29). Exit08:01-02:00",
+        "typeOfDay": 1,
+        "shiftDaysResponse": [
+           
+        ]
+    }
+]

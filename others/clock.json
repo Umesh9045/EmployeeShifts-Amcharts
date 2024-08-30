@@ -1,0 +1,38 @@
+[
+  {
+      "companyId": 23012,
+      "personId": 100816,
+      "clockId": 72,
+      "clockRecordId": 10435220,
+      "timeStamp": "2024-05-15T03:30:01",
+      "direction": "In",
+      "calculate": "Access Control"
+  },
+  {
+      "companyId": 23012,
+      "personId": 100816,
+      "clockId": 73,    
+      "clockRecordId": 10435221,
+      "timeStamp": "2024-05-15T04:03:24",
+      "direction": "Out",
+      "calculate": "Not Paid"
+  },
+  {
+      "companyId": 23012,
+      "personId": 100816,
+      "clockId": 72,
+      "clockRecordId": 10435236,
+      "timeStamp": "2024-05-15T13:02:19",
+      "direction": "In",
+      "calculate": "Access Control"
+    },
+    {
+      "companyId": 23012,
+      "personId": 100816,
+      "clockId": 73,
+      "clockRecordId": 10435237,
+      "timeStamp": "2024-05-16T01:21:34",
+      "direction": "Out",
+      "calculate": "Not Paid"
+    }
+]

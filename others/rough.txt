@@ -1,0 +1,181 @@
+[
+    {
+        "companyId": 23012,
+        "personId": 100816,
+        "clockId": 72,
+        "clockRecordId": 10435220,
+        "timeStamp": "2024-05-15T00:30:01",
+        "direction": "In",
+        "calculate": "Access Control"
+    },
+    {
+        "companyId": 23012,
+        "personId": 100816,
+        "clockId": 73,
+        "clockRecordId": 10435221,
+        "timeStamp": "2024-05-15T01:03:24",
+        "direction": "Out",
+        "calculate": "Not Paid"
+    },
+    {
+        "companyId": 23012,
+        "personId": 100816,
+        "clockId": 72,
+        "clockRecordId": 10435236,
+        "timeStamp": "2024-05-15T13:02:19",
+        "direction": "In",
+        "calculate": "Access Control"
+      },
+      {
+        "companyId": 23012,
+        "personId": 100816,
+        "clockId": 73,
+        "clockRecordId": 10435237,
+        "timeStamp": "2024-05-15T14:21:34",
+        "direction": "Out",
+        "calculate": "Not Paid"
+      }
+]
+
+
+[
+ 
+  {
+      "companyId": 23012,
+      "personId": 100816,
+      "clockId": 72,
+      "clockRecordId": 10435236,
+      "timeStamp": "2024-05-15T13:02:19",
+      "direction": "In",
+      "calculate": "Access Control"
+    },
+    {
+      "companyId": 23012,
+      "personId": 100816,
+      "clockId": 73,
+      "clockRecordId": 10435237,
+      "timeStamp": "2024-05-16T01:21:34",
+      "direction": "Out",
+      "calculate": "Not Paid"
+    }
+]
+
+
+///JS
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    am4core.ready(function () {
+        am4core.useTheme(am4themes_animated);
+        chart = am4core.create("myChart", am4charts.PieChart);
+        chart.data = generateData();
+
+        var pieSeries = chart.series.push(new am4charts.PieSeries());
+        // pieSeries.dataFields.value = "value";
+        // pieSeries.dataFields.category = "category";
+        // pieSeries.labels.template.fontWeight = "bolder";
+        // pieSeries.slices.template.strokeOpacity = 1;
+        // pieSeries.slices.template.propertyFields.stroke = "stroke";
+        // pieSeries.slices.template.propertyFields.fill = "color";
+        // pieSeries.slices.template.propertyFields.hidden = "hidden";
+        // pieSeries.labels.template.text = "{additionalLabel}\u00A0\u00A0{lable}";
+        // pieSeries.labels.template.fontSize = 10;
+        // pieSeries.labels.template.wrap = true;
+        // pieSeries.labels.template.maxWidth = 130;
+        // pieSeries.alignLabels = false;
+        // pieSeries.labels.template.radius = 1;
+        // pieSeries.labels.template.disabled = false;
+        // pieSeries.slices.template.tooltipText = "";
+
+        pieSeries.dataFields.value = "value";
+        pieSeries.dataFields.category = "category";
+        pieSeries.labels.template.fontWeight = "bolder";
+        pieSeries.slices.template.strokeOpacity = 1;
+        pieSeries.slices.template.propertyFields.stroke = "stroke";
+        pieSeries.slices.template.propertyFields.fill = "color";
+        pieSeries.slices.template.propertyFields.hidden = "hidden";
+        pieSeries.labels.template.text = "{additionalLabel}{lable}";
+        pieSeries.labels.template.fontSize = 10;
+        pieSeries.labels.template.wrap = true;
+        pieSeries.labels.template.maxWidth = 130;
+        pieSeries.alignLabels = false;
+        pieSeries.labels.template.disabled = false;
+
+        pieSeries.labels.template.radius = 0.7;
+        pieSeries.slices.template.tooltipText = "";
+
+        // pieSeries.labels.template.paddingTop = 1;
+        // pieSeries.labels.template.paddingBottom = -15;
+        // pieSeries.labels.template.paddingLeft = 0;
+        // pieSeries.labels.template.paddingRight = 0;
+        // pieSeries.labels.template.bent= true;
+        // pieSeries.labels.template.relativeRotation = 90;
+
+        pieSeries.labels.template.adapter.add("radius", function (radius, target) {
+            if (target.dataItem && target.dataItem.dataContext.additionalLabel) {
+                return 30; // Adjust this value to position the additional labels
+            }
+            return radius;
+        });
+
+
+        // Update the tooltipText with the value of additionalLabel
+        pieSeries.slices.template.adapter.add("tooltipText", function (tooltipText, target) {
+            if (target.dataItem && target.dataItem.dataContext) {
+                var x = target.dataItem.dataContext.additionalLabel;
+                console.log("x = " + x);
+                console.log("tooltiptext = " +  pieSeries.slices.template.tooltipText);
+                return x || tooltipText; // Return x if it exists, otherwise return the original tooltipText
+            }
+            return tooltipText;
+        });
+
+
+        chart.legend = new am4charts.Legend();
+        chart.legend.disabled = true;
+    });
+
+});
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    am4core.ready(function () {
+        am4core.useTheme(am4themes_animated);
+        chart = am4core.create("myChart", am4charts.PieChart);
+        chart.data = generateData();
+
+        var pieSeries = chart.series.push(new am4charts.PieSeries());
+        pieSeries.dataFields.value = "value";
+        pieSeries.dataFields.category = "category";
+        pieSeries.labels.template.fontWeight = "bolder";
+        pieSeries.slices.template.strokeOpacity = 1;
+        pieSeries.slices.template.propertyFields.stroke = "stroke";
+        pieSeries.slices.template.propertyFields.fill = "color";
+        pieSeries.slices.template.propertyFields.hidden = "hidden";
+        pieSeries.labels.template.text = "{additionalLabel}{lable}";
+        pieSeries.labels.template.fontSize = 10;
+        pieSeries.labels.template.wrap = true;
+        pieSeries.labels.template.maxWidth = 130;
+        pieSeries.alignLabels = false;
+        pieSeries.labels.template.disabled = false;
+
+        pieSeries.labels.template.radius = 0.7;
+        console.log("Before = "+  pieSeries.slices.template.tooltipText);
+    //    pieSeries.slices.template.tooltipText = "umes";
+        console.log("After = "+  pieSeries.slices.template.tooltipText);
+
+        pieSeries.labels.template.adapter.add("radius", function (radius, target) {
+            if (target.dataItem && target.dataItem.dataContext.additionalLabel) {
+                pieSeries.slices.template.tooltipText = target.dataItem.dataContext.additionalLabel;
+                return 30; // Adjust this value to position the additional labels
+            }
+            return radius;
+        });
+
+        chart.legend = new am4charts.Legend();
+        chart.legend.disabled = true;
+    });
+});

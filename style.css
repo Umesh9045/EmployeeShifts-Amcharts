@@ -1,21 +1,26 @@
-
-
 h1 {
     color: red;
 }
 
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    /* background-color: #f0f0f0; */
 }
 
 .container {
     background-color: white;
     padding: 20px;
+    padding-top: 0;
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     height: max-content;
     width: max-content;
+    margin: 10px;
+
+}
+
+#timeSlotsContainer {
+    margin-top: 20px;
 }
 
 .main {
@@ -23,25 +28,17 @@ body {
     flex-direction: row;
 }
 
-#shift_details {
-    display: none;
-    font-weight: bold;
+
+label,
+select,
+button {
+    display: inline-block;
+    margin-right: 10px;
 }
 
-#span_beforeShiftTime {
-    color: #DA70D6;
-}
-
-#span_normalShiftTime{
-    color: #63d61b;
-}
-
-#span_afterShiftTime{
-    color: #7470DA;
-}
 label {
-    display: block;
     margin-top: 10px;
+    font-weight: bold;
 }
 
 input {
@@ -51,74 +48,132 @@ input {
 
 button {
     margin-top: 10px;
-    padding: 10px 20px;
+    padding: 8px 16px;
     background-color: #007bff;
     color: white;
     border: none;
     border-radius: 4px;
-    cursor: pointer;
+    
 }
 
 button:hover {
     background-color: #0056b3;
+    cursor:pointer;
 }
 
-#results {
-    margin-top: 20px;
-}
-
-
-/* new css  */
-
-/* body {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-family: Arial, sans-serif;
-} */
-
-.chart-container {
-    max-width:500px;
-    font-family: Arial, sans-serif;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 20px;
-}
-
-th, td {
+.time-slot {
     padding: 10px;
-    text-align: center;
     border: 1px solid #ddd;
-}
-
-th {
-    background-color: #f2f2f2;
-}
-
-label {
-    margin-top: 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    cursor: pointer;
     font-weight: bold;
 }
 
-input[type="time"] {
-    width: 100%;
-    padding: 5px;
-    box-sizing: border-box;
+.time-slot:hover {
+    background-color: #f0f0f0;
+    border-color: #ccc;
 }
 
-button {
-    padding: 8px 16px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
+#legend {
+    display: none;
+}
+
+#legend h3 {
+    margin-bottom: 10px;
+}
+
+#legend ul {
+    list-style: none;
+    padding: 0;
+}
+
+#legend li {
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.color-box {
+    width: 20px;
+    height: 20px;
+    display: inline-block;
+    margin-right: 10px;
     border-radius: 4px;
-    cursor: pointer;
 }
 
-    button:hover {
-        background-color: #45a049;
+#myChart {
+    width: 500px;
+    /* 700px * 0.8 */
+    height: 350px;
+    /* 800px * 0.8 */
+    padding: 0;
+    padding-top: 100px;
+    padding-left: 10px;
+}
+
+.spinner {
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    animation: spin 2s linear infinite;
+    margin: auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
     }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#displayDay {
+    text-align: center;
+    text-transform: capitalize;
+    font-weight: bold;
+    margin-bottom: -80px;
+    margin-top: 5px;
+}
+
+#myChart {
+    width: 500px;
+    /* 700px * 0.8 */
+    height: 350px;
+    /* 800px * 0.8 */
+    padding: 0;
+    padding-top: 100px;
+    padding-left: 10px;
+}
+
+#breakChart {
+    width: 500px;
+    /* 700px * 0.8 */
+    height: 350px;
+    /* 800px * 0.8 */
+    padding: 0;
+    padding-top: 100px;
+    padding-left: 10px;
+}
+
+#chart-container {
+    /* position: relative; */
+   
+}
+
+#myChart, #breakChart {
+    position: absolute;
+  
+}
+
+#breakChart {
+    transform: scale(1); /* Adjust the scale to make it smaller */
+    transform-origin: center; /* Ensure it scales from the center */
+    opacity: 0.55; 
+    /* Make the chart semi-transparent */
+    z-index: 1; /* Ensure it sits on top of the main chart */
+}
