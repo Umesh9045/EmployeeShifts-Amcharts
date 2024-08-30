@@ -5,15 +5,13 @@ var currentHighlight = null; // To keep track of the currently highlighted slice
 var originalColors = {}; // Object to store original fill and stroke colors by index
 var container = document.getElementById('timeSlotsContainer');
 
-
 document.addEventListener("DOMContentLoaded", function () {
-
     am4core.ready(function () {
         am4core.useTheme(am4themes_animated);
 
         chart = am4core.create("myChart", am4charts.PieChart);
         chart.data = generateData();
-
+        
         var pieSeries = chart.series.push(new am4charts.PieSeries());
         pieSeries.dataFields.value = "value";
         pieSeries.dataFields.category = "category";
@@ -22,15 +20,14 @@ document.addEventListener("DOMContentLoaded", function () {
         pieSeries.slices.template.propertyFields.stroke = "stroke";
         pieSeries.slices.template.propertyFields.fill = "color";
         pieSeries.slices.template.propertyFields.hidden = "hidden";
-        pieSeries.labels.template.text = "{additionalLabel}{lable}";
+        pieSeries.labels.template.text = "{lable}{additionalLabel}"; // Display hour labels and additional labels
         pieSeries.labels.template.fontSize = 10;
         pieSeries.labels.template.wrap = true;
-        pieSeries.labels.template.maxWidth = 100; //maxwidth of labels (shift-description)
+        pieSeries.labels.template.maxWidth = 100; // Max width of labels (shift-description)
         pieSeries.alignLabels = false;
         pieSeries.labels.template.radius = 0.7;
         pieSeries.labels.template.disabled = false;
-        pieSeries.slices.template.tooltipText = ""; //shift-slice hover text
-        
+
         pieSeries.labels.template.adapter.add("radius", function (radius, target) {
             if (target.dataItem && target.dataItem.dataContext.additionalLabel) {
                 // pieSeries.slices.template.tooltipText = target.dataItem.dataContext.additionalLabel;
@@ -39,13 +36,24 @@ document.addEventListener("DOMContentLoaded", function () {
             return radius;
         });
 
+        // Tooltip setup
+        pieSeries.tooltip.getFillFromObject = false; // Ensures the tooltip uses the specified color
+        pieSeries.tooltip.background.fill = am4core.color("#ffffff"); // Tooltip background color
+        pieSeries.tooltip.background.stroke = am4core.color("#000000"); // Tooltip border color
+        pieSeries.tooltip.label.fill = am4core.color("#000000"); // Tooltip text color
+        pieSeries.tooltip.label.fontSize = 12; // Tooltip text size
+
+        // Ensure that the tooltip shows additionalLabel
+        pieSeries.slices.template.adapter.add("tooltipText", function (tooltipText, slice) {
+            return slice.dataItem ? slice.dataItem.dataContext.tooltipText : "";
+        });
+
         chart.legend = new am4charts.Legend();
         chart.legend.disabled = true;
     });
-
 });
 
-function readValue(day) {
+function readValue() {
     container.innerHTML = ''; // Clear existing slots
     document.getElementById("displayDay").innerText = "";
 
@@ -108,6 +116,7 @@ function updateChart(shifts, day) {
         dataItem.color = remainingColor;
         dataItem.stroke = remainingColor;
         dataItem.hidden = false;
+        dataItem.tooltipText = ""; // Clear existing tooltip text
     });
 
     document.getElementById("displayDay").innerText = day;
@@ -132,10 +141,12 @@ function updateChart(shifts, day) {
                         dataItem.color = slot.color;
                         dataItem.stroke = slot.color;
                         dataItem.index = slot.index; // Store the index
-                        if (!labelAssigned && index === middleIndex) {
-                            dataItem.additionalLabel = slot.description;
-                            labelAssigned = true;
-                        }
+                        // if (!labelAssigned && index === middleIndex) {
+                        //     dataItem.additionalLabel = slot.description;
+                        //     labelAssigned = true;
+                        // }
+
+                        dataItem.tooltipText = slot.description; // Tooltip for each index
                     }
                 }
                 else if (startIndex > endIndex) {
@@ -143,11 +154,18 @@ function updateChart(shifts, day) {
                         dataItem.color = slot.color;
                         dataItem.stroke = slot.color;
                         dataItem.index = slot.index; // Store the index
-                        if (!labelAssigned && index === middleIndex) {
-                            dataItem.additionalLabel = slot.description;
-                            labelAssigned = true;
-                        }
+                        // if (!labelAssigned && index === middleIndex) {
+                        //     dataItem.additionalLabel = slot.description;
+                        //     labelAssigned = true;
+                        // }
+                        dataItem.tooltipText = slot.description; // Tooltip for each index
                     }
+                }
+            });
+             // Set additional label only for the central index
+             updatedData.forEach((dataItem, index) => {
+                if (index === middleIndex) {
+                    dataItem.additionalLabel = slot.description; // Label at central index
                 }
             });
         });
@@ -171,15 +189,15 @@ function generateData() {
     var data = [];
     for (var i = 0; i < 1440; i++) {
         var hour = Math.floor(i / 60);
-        var label = (i % 60 === 0 && hour >= 0 && hour <= 23) ? hour.toString() : '';
-
+        var label = (i % 60 === 0 && hour >= 0 && hour <= 23) ? (hour === 0 ? 24 : hour) : ''; // Display 1 to 24
         data.push({
             category: i,
             value: 1,
             lable: label,
             color: remainingColor,
-            additionalLabel: "",
-            index: null
+            additionalLabel: "", // Initial additional label
+            tooltipText: "", // Initial tooltip text
+            index: null // Make sure each data item has an index
         });
     }
     return data;
@@ -192,15 +210,15 @@ function displayTimeSlots(slots, indices) {
         slotElement.textContent = slot.name + ': ' + slot.description;
         slotElement.style.cursor = 'pointer';
         slotElement.dataset.index = indices[index]; // Store the index to highlight on click
-
+ 
         slotElement.addEventListener('click', function () {
             highlightSlot(indices[index]);
         });
-
+ 
         container.appendChild(slotElement);
     });
 }
-
+ 
 function highlightSlot(index) {
     // Reset previous highlight
     if (currentHighlight) {
@@ -216,7 +234,7 @@ function highlightSlot(index) {
             }
         });
     }
-
+ 
     // Highlight the new slot
     chart.series.values[0].slices.each(function (slice) {
         if (slice.dataItem && slice.dataItem.dataContext.index === index) {
@@ -227,11 +245,11 @@ function highlightSlot(index) {
                     stroke: slice.stroke
                 };
             }
-
+ 
             // Apply highlight color and scale
             slice.fill = am4core.color("#0000ff"); // Highlight color
             slice.stroke = am4core.color("#0000ff"); // Highlight border
-
+ 
             // Animate the slice to draw attention
             var animation = slice.animate({
                 property: "scale",
@@ -239,7 +257,7 @@ function highlightSlot(index) {
                 to: 1.01,
                 duration: 400
             });
-
+ 
             animation.events.on("animationended", function () {
                 // Restore scale to normal after animation
                 slice.animate({
@@ -249,9 +267,9 @@ function highlightSlot(index) {
                     duration: 400
                 });
             });
-
+ 
             // Update the current highlight
             currentHighlight = slice;
         }
     });
-}
+}      
